@@ -37,14 +37,10 @@ class HomeViewController: UIViewController {
     }
     
     private func getTrendingMovies() {
-        APIService.shared.getTrendingMovies { result in
-            switch result {
-            case .success(let movies):
-                print(movies)
-            case .failure(let error):
-                print(error)
-            }
-        }
+//        MovieViewModel.shared.fetchTrendingMovies()
+//        TvViewModel.shared.fetchTrendingTvs()
+//        MovieViewModel.shared.fetchUpcomingMovies()
+        MovieViewModel.shared.fetchPopularMovies()
     }
     
     private func configureNavbar() {

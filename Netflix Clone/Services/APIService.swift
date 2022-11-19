@@ -19,12 +19,18 @@ enum APIError: Error {
     case decodingError
 }
 
-class APIService {
+struct APIService {
     
-    static let shared = APIService()
+    let urlPath: String
+    let urlParams: String
     
-    func getTrendingMovies(completion: @escaping (Result<[Movie], APIError>) -> Void) {
-        guard let url = URL(string: "\(Constants.baseURL)/3/trending/movie/week?api_key=\(Constants.API_KEY)") else { return }
+    init(urlPath: String, urlParams: String? = nil) {
+        self.urlPath = urlPath
+        self.urlParams = urlParams ?? ""
+    }
+    
+    func getData<T: Decodable>(completion: @escaping (Result<T, APIError>) -> Void) {
+        guard let url = URL(string: "\(Constants.baseURL)\(urlPath)?api_key=\(Constants.API_KEY)\(urlParams)") else { return }
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -38,8 +44,8 @@ class APIService {
             
             if let data = data {
                 do {
-                    let result = try JSONDecoder().decode(TrendingMoviesResponse.self, from: data)
-                    completion(.success(result.results))
+                    let result = try JSONDecoder().decode(T.self, from: data)
+                    completion(.success(result))
                 } catch {
                     completion(.failure(.decodingError))
                 }
@@ -51,7 +57,6 @@ class APIService {
             
         }
         task.resume()
-        
     }
     
 }
