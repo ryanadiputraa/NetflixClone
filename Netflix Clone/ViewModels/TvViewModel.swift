@@ -11,14 +11,14 @@ class TvViewModel {
     
     static let shared = TvViewModel()
     
-    func fetchTrendingTvs() {
+    func fetchTrendingTvs(completion: @escaping (Result<[Poster], APIError>) -> Void) {
         let apiService = APIService(urlPath: "/3/trending/tv/week")
-        apiService.getData { (result: Result<TrendingTvsResponse, APIError>) in
+        apiService.getData { (result: Result<PosterResponse, APIError>) in
             switch result {
             case .success(let data):
-                print(data.results)
+                completion(.success(data.results))
             case .failure(let error):
-                print(error)
+                completion(.failure(error))
             }
         }
     }

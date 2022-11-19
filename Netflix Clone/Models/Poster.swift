@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct MovieResponse: Codable {
-    let results: [Movie]
+struct PosterResponse: Codable {
+    let results: [Poster]
 }
 
-struct Movie: Codable, Identifiable {
+struct Poster: Codable, Identifiable {
     let id: Int
     let media_type: String?
     let original_name: String?
