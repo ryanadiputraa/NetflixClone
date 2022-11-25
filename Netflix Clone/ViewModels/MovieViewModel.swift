@@ -58,4 +58,16 @@ class MovieViewModel {
             }
         }
     }
+    
+    func discoverMovies(completion: @escaping (Result<[Poster], APIError>) -> Void) {
+        let apiService = APIService(urlPath: "/3/discover/movie", urlParams: "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate")
+        apiService.getData { (result: Result<PosterResponse, APIError>) in
+            switch result {
+            case .success(let data):
+                completion(.success(data.results))
+            case .failure(let error):
+                completion(.failure((error)))
+            }
+        }
+    }
 }
