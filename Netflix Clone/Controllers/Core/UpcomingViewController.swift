@@ -37,10 +37,10 @@ class UpcomingViewController: UIViewController {
     }
     
     private func fetchUpcomingMovies() {
-        MovieViewModel.shared.fetchUpcomingMovies { [weak self] result in
+        APIService.shared.fetchData(urlPath: "/3/movie/upcoming", urlParams: "&language=en-US&page=1") { [weak self] (result: Result<PosterResponse, APIError>) in
             switch result {
-            case .success(let posters):
-                self?.posters = posters
+            case.success(let data):
+                self?.posters = data.results
                 DispatchQueue.main.async {
                     self?.upcomingTable.reloadData()
                 }

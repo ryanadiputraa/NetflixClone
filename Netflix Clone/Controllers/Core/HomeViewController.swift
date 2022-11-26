@@ -97,52 +97,52 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
-            MovieViewModel.shared.fetchTrendingMovies { result in
+            APIService.shared.fetchData(urlPath: "/3/trending/movie/week") { (result: Result<PosterResponse, APIError>) in
                 switch result {
-                case .success(let movies):
-                    cell.configure(with: movies)
+                case .success(let data):
+                    cell.configure(with: data.results)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("fetch error: \(error.localizedDescription)")
                 }
             }
 
         case Sections.TrendingTv.rawValue:
-            TvViewModel.shared.fetchTrendingTvs { result in
+            APIService.shared.fetchData(urlPath: "/3/trending/tv/week") { (result: Result<PosterResponse, APIError>) in
                 switch result {
-                case .success(let tvs):
-                    cell.configure(with: tvs)
+                case .success(let data):
+                    cell.configure(with: data.results)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("fetch error: \(error.localizedDescription)")
                 }
             }
             
         case Sections.Popular.rawValue:
-            MovieViewModel.shared.fetchPopularMovies { result in
+            APIService.shared.fetchData(urlPath: "/3/movie/popular", urlParams: "&languange=en-US&page=1") { (result: Result<PosterResponse, APIError>) in
                 switch result {
-                case .success(let movies):
-                    cell.configure(with: movies)
+                case .success(let data):
+                    cell.configure(with: data.results)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("fetch error: \(error.localizedDescription)")
                 }
             }
             
         case Sections.Upcoming.rawValue:
-            MovieViewModel.shared.fetchUpcomingMovies { result in
+            APIService.shared.fetchData(urlPath: "/3/movie/upcoming", urlParams: "&languange=en-US&page=1") { (result: Result<PosterResponse, APIError>) in
                 switch result {
-                case .success(let movies):
-                    cell.configure(with: movies)
+                case .success(let data):
+                    cell.configure(with: data.results)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("fetch error: \(error.localizedDescription)")
                 }
             }
             
         case Sections.TopRated.rawValue:
-            MovieViewModel.shared.fetchTopRatedMovies { result in
+            APIService.shared.fetchData(urlPath: "/3/movie/top_rated", urlParams: "&languange=en-US&page=1") { (result: Result<PosterResponse, APIError>) in
                 switch result {
-                case .success(let movies):
-                    cell.configure(with: movies)
+                case .success(let data):
+                    cell.configure(with: data.results)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("fetch error: \(error.localizedDescription)")
                 }
             }
             

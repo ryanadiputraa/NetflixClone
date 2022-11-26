@@ -22,3 +22,8 @@ struct Poster: Codable, Identifiable {
     let release_data: String?
     let vote_average: Double
 }
+
+struct PosterViewModel {
+    let posterTitle: String
+    let posterImageURL: String
+}

@@ -16,6 +16,13 @@ class SearchViewController: UIViewController {
         table.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.identifier)
         return table
     }()
+    
+    private let searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: SearchResultViewController())
+        controller.searchBar.placeholder = "Search Movies..."
+        controller.searchBar.searchBarStyle = .minimal
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +30,9 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.tintColor = .label
+        navigationItem.searchController = searchController
+        
         
         view.addSubview(discoverTable)
         
@@ -38,10 +48,10 @@ class SearchViewController: UIViewController {
     }
     
     private func searchMovies() {
-        MovieViewModel.shared.discoverMovies { [weak self] result in
+        APIService.shared.fetchData(urlPath: "/3/discover/movie", urlParams: "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate") { [weak self] (result: Result<PosterResponse, APIError>) in
             switch result {
             case .success(let data):
-                self?.posters = data
+                self?.posters = data.results
                 DispatchQueue.main.async {
                     self?.discoverTable.reloadData()
                 }

@@ -19,17 +19,11 @@ enum APIError: Error {
     case decodingError
 }
 
-struct APIService {
+class APIService {
     
-    let urlPath: String
-    let urlParams: String
+    static let shared = APIService()
     
-    init(urlPath: String, urlParams: String? = nil) {
-        self.urlPath = urlPath
-        self.urlParams = urlParams ?? ""
-    }
-    
-    func getData<T: Decodable>(completion: @escaping (Result<T, APIError>) -> Void) {
+    func fetchData<T: Decodable>(urlPath: String, urlParams: String = "", completion: @escaping (Result<T, APIError>) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)\(urlPath)?api_key=\(Constants.API_KEY)\(urlParams)") else { return }
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
