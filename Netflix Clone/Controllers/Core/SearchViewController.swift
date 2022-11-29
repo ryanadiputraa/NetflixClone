@@ -39,7 +39,8 @@ class SearchViewController: UIViewController {
         discoverTable.delegate = self
         discoverTable.dataSource = self
         
-        searchMovies()
+        discoverMovies()
+        searchController.searchResultsUpdater = self
     }
 
     override func viewDidLayoutSubviews() {
@@ -47,7 +48,7 @@ class SearchViewController: UIViewController {
         discoverTable.frame = view.bounds
     }
     
-    private func searchMovies() {
+    private func discoverMovies() {
         APIService.shared.fetchData(urlPath: "/3/discover/movie", urlParams: "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate") { [weak self] (result: Result<PosterResponse, APIError>) in
             switch result {
             case .success(let data):
@@ -82,6 +83,34 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
+    }
+    
+}
+
+extension SearchViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        guard let input = searchBar.text,
+            !input.trimmingCharacters(in: .whitespaces).isEmpty,
+            input.trimmingCharacters(in: .whitespaces).count >= 3,
+            let resultController = searchController.searchResultsController as? SearchResultViewController else {
+                return
+            }
+        
+        guard let query = input.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return             }
+        
+        APIService.shared.fetchData(urlPath: "/3/search/movie", urlParams: "&query=\(query)") { (result: Result<PosterResponse, APIError>) in
+            switch result {
+            case .success(let data):
+                resultController.posters = data.results
+                DispatchQueue.main.async {
+                    resultController.searchResultCollectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }
