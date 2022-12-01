@@ -62,4 +62,23 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         return titles.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let title = titles[indexPath.row]
+        guard let titleName = title.original_title ?? title.original_title else {
+            return
+        }
+        
+        guard let query = "\(titleName) trailer".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        APIService.shared.fetchData(useYoutubeAPI: true, urlPath: "/search", urlParams: "&q=\(query)") { (result: Result<YoutubeSearchResponse, APIError>) in
+            switch result {
+            case .success(let response):
+                print(response.items[0])
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }

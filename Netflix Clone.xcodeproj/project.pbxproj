@@ -10,6 +10,7 @@
 		9409FBDD2928BFE30072B529 /* SectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9409FBDC2928BFE30072B529 /* SectionCollectionViewCell.swift */; };
 		9409FBE02928C1460072B529 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9409FBDF2928C1460072B529 /* SDWebImage */; };
 		9409FBE22928C1460072B529 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9409FBE12928C1460072B529 /* SDWebImageMapKit */; };
+		94272D1829384A3400A4D7B0 /* YoutubeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94272D1729384A3400A4D7B0 /* YoutubeSearch.swift */; };
 		946FA18C2923C02300D55339 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946FA18B2923C02300D55339 /* APIService.swift */; };
 		946FA18E2923C66C00D55339 /* Poster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946FA18D2923C66C00D55339 /* Poster.swift */; };
 		949982FC292C673C00F779BD /* PosterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949982FB292C673C00F779BD /* PosterTableViewCell.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		9409FBDC2928BFE30072B529 /* SectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionViewCell.swift; sourceTree = "<group>"; };
+		94272D1729384A3400A4D7B0 /* YoutubeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearch.swift; sourceTree = "<group>"; };
 		946FA18B2923C02300D55339 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		946FA18D2923C66C00D55339 /* Poster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poster.swift; sourceTree = "<group>"; };
 		949982FB292C673C00F779BD /* PosterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterTableViewCell.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				946FA18D2923C66C00D55339 /* Poster.swift */,
+				94272D1729384A3400A4D7B0 /* YoutubeSearch.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				94B5E2DB291FCF7000BEE57F /* SearchViewController.swift in Sources */,
 				94B5E2C6291FCD9300BEE57F /* MainTabBarViewController.swift in Sources */,
 				94B5E2E4291FD85E00BEE57F /* CollectionViewTableViewCell.swift in Sources */,
+				94272D1829384A3400A4D7B0 /* YoutubeSearch.swift in Sources */,
 				946FA18C2923C02300D55339 /* APIService.swift in Sources */,
 				94B5E2E6291FE25C00BEE57F /* HeroHeaderUIView.swift in Sources */,
 				94B5E2C2291FCD9300BEE57F /* AppDelegate.swift in Sources */,

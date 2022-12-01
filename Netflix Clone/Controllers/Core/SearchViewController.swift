@@ -98,7 +98,7 @@ extension SearchViewController: UISearchResultsUpdating {
                 return
             }
         
-        guard let query = input.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return             }
+        guard let query = input.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         
         APIService.shared.fetchData(urlPath: "/3/search/movie", urlParams: "&query=\(query)") { (result: Result<PosterResponse, APIError>) in
             switch result {
