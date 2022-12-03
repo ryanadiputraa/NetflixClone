@@ -19,3 +19,9 @@ struct YTVideoElement: Codable {
     let kind: String
     let videoId: String
 }
+
+struct PosterPreview {
+    let title: String
+    let overview: String
+    let youtubeView: YTVideoElement
+}

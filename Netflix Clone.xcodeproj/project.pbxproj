@@ -26,6 +26,7 @@
 		94B5E2E4291FD85E00BEE57F /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B5E2E3291FD85E00BEE57F /* CollectionViewTableViewCell.swift */; };
 		94B5E2E6291FE25C00BEE57F /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B5E2E5291FE25C00BEE57F /* HeroHeaderUIView.swift */; };
 		94C0C89F29312240002EED50 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C0C89E29312240002EED50 /* SearchResultViewController.swift */; };
+		94D9DD0E293B70FE00D39471 /* PosterPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D9DD0D293B70FE00D39471 /* PosterPreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		94B5E2E3291FD85E00BEE57F /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 		94B5E2E5291FE25C00BEE57F /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
 		94C0C89E29312240002EED50 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		94D9DD0D293B70FE00D39471 /* PosterPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterPreviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				94C0C89E29312240002EED50 /* SearchResultViewController.swift */,
+				94D9DD0D293B70FE00D39471 /* PosterPreviewViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				946FA18E2923C66C00D55339 /* Poster.swift in Sources */,
 				94C0C89F29312240002EED50 /* SearchResultViewController.swift in Sources */,
 				949982FC292C673C00F779BD /* PosterTableViewCell.swift in Sources */,
+				94D9DD0E293B70FE00D39471 /* PosterPreviewViewController.swift in Sources */,
 				94B5E2D7291FCF3300BEE57F /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

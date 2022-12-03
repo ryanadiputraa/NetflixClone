@@ -95,6 +95,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
+        cell.delegate = self
+        
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
             APIService.shared.fetchData(urlPath: "/3/trending/movie/week") { (result: Result<PosterResponse, APIError>) in
@@ -158,6 +160,18 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let offset = scrollView.contentOffset.y + defaulOffset
         
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
+    }
+    
+}
+
+extension HomeViewController: CollectionViewTableViewCellDelegate {
+    
+    func CollectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, model: PosterPreview) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = PosterPreviewViewController()
+            vc.configure(with: model)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 }

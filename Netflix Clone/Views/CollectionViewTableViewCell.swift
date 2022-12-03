@@ -7,10 +7,18 @@
 
 import UIKit
 
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    
+    func CollectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, model: PosterPreview)
+    
+}
+
 class CollectionViewTableViewCell: UITableViewCell {
 
     static let identifier = "CollectionViewTableViewCell"
     private var titles: [Poster] = []
+    
+    weak var delegate: CollectionViewTableViewCellDelegate?
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -71,10 +79,19 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         }
         
         guard let query = "\(titleName) trailer".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        APIService.shared.fetchData(useYoutubeAPI: true, urlPath: "/search", urlParams: "&q=\(query)") { (result: Result<YoutubeSearchResponse, APIError>) in
+        APIService.shared.fetchData(useYoutubeAPI: true, urlPath: "/search", urlParams: "&q=\(query)") { [weak self] (result: Result<YoutubeSearchResponse, APIError>) in
             switch result {
             case .success(let response):
-                print(response.items[0])
+                
+                let model = PosterPreview(
+                    title: self?.titles[indexPath.row].original_title ?? self?.titles[indexPath.row].original_name ?? "Unkown",
+                    overview: self?.titles[indexPath.row].overview ?? "",
+                    youtubeView: response.items[0].id)
+                
+                guard let strongSelf = self else { return }
+                
+                self?.delegate?.CollectionViewTableViewCellDidTapCell(strongSelf, model: model)
+                
             case .failure(let error):
                 print(error)
             }
