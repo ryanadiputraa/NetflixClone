@@ -55,6 +55,11 @@ class HeroHeaderUIView: UIView {
         heroImageView.frame = bounds
     }
     
+    public func configure(with model: PosterViewModel) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterImageURL)") else { return }
+        heroImageView.sd_setImage(with: url, completed: nil)
+    }
+    
     private func addGradient() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
