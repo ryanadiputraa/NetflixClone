@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func SearchResultViewControllerDidTapItem(_ viewModel: PosterPreview)
+}
+
 class SearchResultViewController: UINavigationController {
     
     var posters = [Poster]()
+    public weak var delegates: SearchResultViewControllerDelegate?
 
     let searchResultCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -49,6 +54,28 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         cell.configure(with: poster.poster_path ?? "")
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let poster = posters[indexPath.row]
+        guard let title = poster.original_title ?? poster.original_name else { return }
+        guard let query = "\(title) trailer".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        
+        APIService.shared.fetchData(useYoutubeAPI: true, urlPath: "/search", urlParams: "&q=\(query)") { [weak self] (result: Result<YoutubeSearchResponse, APIError>) in
+            switch result {
+            case .success(let response):
+                self?.delegates?.SearchResultViewControllerDidTapItem(PosterPreview(
+                    title: title,
+                    overview: poster.overview ?? "",
+                    youtubeView: response.items[0].id))
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        
+        
     }
     
 }

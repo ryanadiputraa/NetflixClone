@@ -85,9 +85,32 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         return 140
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let poster = posters[indexPath.row]
+        guard let title = poster.original_title ?? poster.original_name else { return }
+        guard let query = "\(title) trailer".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        
+        APIService.shared.fetchData(useYoutubeAPI: true, urlPath: "/search", urlParams: "&q=\(query)") { [weak self] (result: Result<YoutubeSearchResponse, APIError>) in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    let vc = PosterPreviewViewController()
+                    vc.configure(with: PosterPreview(
+                        title: title,
+                        overview: poster.overview ?? "",
+                        youtubeView: response.items[0].id))
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
 }
 
-extension SearchViewController: UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating, SearchResultViewControllerDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
@@ -97,6 +120,7 @@ extension SearchViewController: UISearchResultsUpdating {
             let resultController = searchController.searchResultsController as? SearchResultViewController else {
                 return
             }
+        resultController.delegates = self
         
         guard let query = input.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         
@@ -110,6 +134,14 @@ extension SearchViewController: UISearchResultsUpdating {
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    func SearchResultViewControllerDidTapItem(_ viewModel: PosterPreview) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = PosterPreviewViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
