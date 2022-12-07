@@ -9,7 +9,21 @@ import UIKit
 import WebKit
 
 class PosterPreviewViewController: UIViewController {
-
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView(frame: .zero)
+        scrollView.autoresizingMask = .flexibleHeight
+        scrollView.bounces = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let viewContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let posterTitle: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -47,12 +61,24 @@ class PosterPreviewViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        view.addSubview(posterTitle)
-        view.addSubview(overviewLabel)
-        view.addSubview(downloadButton)
-        view.addSubview(webView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(viewContainer)
+        
+        viewContainer.addSubview(posterTitle)
+        viewContainer.addSubview(overviewLabel)
+        viewContainer.addSubview(downloadButton)
+        viewContainer.addSubview(webView)
         
         configureConstraints()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()   
+        let contentViewSize = CGSize(width: view.frame.width, height: self.view.frame.height)
+        scrollView.frame = view.bounds
+        scrollView.contentSize = viewContainer.frame.size
+        scrollView.contentSize = contentViewSize
+        viewContainer.frame.size = contentViewSize
     }
     
     func configure(with model: PosterPreview) {
@@ -66,26 +92,29 @@ class PosterPreviewViewController: UIViewController {
     }
     
     private func configureConstraints() {
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        viewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        
         let webViewConstraints = [
-            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: viewContainer.topAnchor),
+            webView.leftAnchor.constraint(equalTo: viewContainer.leftAnchor),
+            webView.rightAnchor.constraint(equalTo: viewContainer.rightAnchor),
             webView.heightAnchor.constraint(equalToConstant: 300)
         ]
         
         let posterTitleConstraints = [
             posterTitle.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 20),
-            posterTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+            posterTitle.leadingAnchor.constraint(equalTo: viewContainer.leadingAnchor, constant: 20)
         ]
         
         let overviewLabelConstraints = [
             overviewLabel.topAnchor.constraint(equalTo: posterTitle.bottomAnchor, constant: 20),
-            overviewLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            overviewLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            overviewLabel.leadingAnchor.constraint(equalTo: viewContainer.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            overviewLabel.trailingAnchor.constraint(equalTo: viewContainer.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ]
         
         let downloadButtonConstraints = [
-            downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            downloadButton.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor),
             downloadButton.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 25),
             downloadButton.widthAnchor.constraint(equalToConstant: 140),
             downloadButton.heightAnchor.constraint(equalToConstant: 40)
